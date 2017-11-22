@@ -4,12 +4,12 @@ from __future__ import unicode_literals
 
 from django.conf.urls import url, include
 
-from .viewsets import (
-    SignUpViewSet, SignInViewSet, SignOutViewSet
-)
+from .routers import account_router
+from .views import SignUpView
 
 urlpatterns = [
-    url(r'^sign-up', include(SignUpViewSet, namespace='sign-up')),
-    url(r'^sign-in', include(SignInViewSet, namespace='sign-in')),
-    url(r'^sign-out', include(SignOutViewSet, namespace='sign-out')),
+    url(r'^', include(account_router.urls)),
+    url(r'^sign_up/$', SignUpView.as_view(), name='sign_up'),
+    # url(r'^sign-in', include(SignInViewSet, namespace='sign-in')),
+    # url(r'^sign-out', include(SignOutViewSet, namespace='sign-out')),
 ]

@@ -4,8 +4,11 @@ __pycache__/
 
 # Django stuff:
 *.log
-honey/settings/
+*/migrations/000*.py
+honey/settings/*.py
 db.sqlite3
+static/
+media/
 
 # Pycharm stuff:
 .idea

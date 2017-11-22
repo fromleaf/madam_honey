@@ -2,26 +2,26 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 
 from oauth2_provider.contrib.rest_framework import (
-    TokenHasReadWriteScope
+    TokenHasReadWriteScope, TokenHasScope
 )
 
+from .serializers import UserSerializer, GroupSerializer
 
-class SignUpViewSet(viewsets.ModelViewSet):
+
+class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, TokenHasReadWriteScope]
     queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
-class SignInViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, TokenHasReadWriteScope]
-    queryset = User.objects.all()
-
-
-class SignOutViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, TokenHasReadWriteScope]
-    queryset = User.objects.all()
+class GroupViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated, TokenHasScope]
+    required_scopes = ['groups']
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer

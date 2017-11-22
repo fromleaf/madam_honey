@@ -18,13 +18,12 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    url(r'^docs/', include('rest_framework_docs.urls', namespace='drf_docs')),
     url(r'^admin/', admin.site.urls),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'^docs/', include('rest_framework_docs.urls', namespace='drf_docs')),
 ]
 
 # Add apps' urls
 urlpatterns += [
-    # url(r'^account/', include('honey_account.urls', namespace='account_app')),
-    url(r'', include('honey_user.urls', namespace='user_app')),
+    url(r'', include('honey_account.urls', namespace='account')),
 ]
