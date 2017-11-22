@@ -5,7 +5,8 @@ __pycache__/
 # Django stuff:
 *.log
 */migrations/000*.py
-honey/settings/*.py
+honey/settings/base.py
+honey/settings/local.py
 db.sqlite3
 static/
 media/
