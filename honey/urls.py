@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from honey_common.views import MainView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,5 +26,6 @@ urlpatterns = [
 
 # Add apps' urls
 urlpatterns += [
+    url(r'^main/$', MainView.as_view(), name='main'),
     url(r'', include('honey_account.urls', namespace='account')),
 ]

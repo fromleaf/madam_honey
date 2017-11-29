@@ -5,11 +5,23 @@ from __future__ import unicode_literals
 from django.conf.urls import url, include
 
 from .routers import account_router
-from .views import SignUpView
+from .views import (
+    ThanksView, SignUpView, LogInView,
+    SignUpAPIView
+)
 
 urlpatterns = [
     url(r'^', include(account_router.urls)),
-    url(r'^sign_up/$', SignUpView.as_view(), name='sign_up'),
+    # For normal page
+    url(r'^sign-up/$', SignUpView.as_view(), name='sign-up'),
+    url(r'^log-in/$', LogInView.as_view(), name='log-in'),
+    url(r'^thanks/$', ThanksView.as_view(), name='thanks'),
+
+    # For API
+    url(
+        r'^(?P<version>(v1|v2))/sign-up/$',
+        SignUpAPIView.as_view(), name='sign-up-api'
+    ),
     # url(r'^sign-in', include(SignInViewSet, namespace='sign-in')),
     # url(r'^sign-out', include(SignOutViewSet, namespace='sign-out')),
 ]

@@ -20,7 +20,7 @@ class BaseTest(APITestCase):
         """
         pass
 
-    def get_token(self, username, password, application, client):
+    def get_token(self, password, application, client):
         pass
 
     def create_user(self, user_count):

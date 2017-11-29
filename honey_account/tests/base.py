@@ -36,7 +36,7 @@ class BaseAccountTest(APITestCase):
         self.test_token = ""
         self.factory = RequestFactory()
 
-        test_user = User(username=self.TEST_USER, email=self.EMAIL)
+        test_user = User(email=self.EMAIL)
         test_user.set_password(self.PASSWORD)
         test_user.save()
 
@@ -47,7 +47,7 @@ class BaseAccountTest(APITestCase):
         """
         pass
 
-    def get_token(self, username, password, application, client):
+    def get_token(self, password, application, client):
         pass
 
     def create_randomic_users(self, user_count):
@@ -55,7 +55,6 @@ class BaseAccountTest(APITestCase):
         for person in range(user_count):
             user_arr.append(
                 User(
-                    username='{0}{1}'.format('Anonymous', person),
                     email='{0}{1}@{2}.com'.format('Anonymous', person, person),
                     password='{0}'.format('MyPassW@')
                 )

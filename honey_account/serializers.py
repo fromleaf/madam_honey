@@ -19,5 +19,5 @@ class GroupSerializer(serializers.ModelSerializer):
 class SignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'password')
-        write_only_fields = ('password',)
+        fields = ('password', )
+        write_only_fields = ('password', )
