@@ -58,23 +58,35 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class ContactForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+class UserLoginForm(forms.ModelForm):
+    """
+    A form for logging users.
+    """
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
     class Meta:
         model = HoneyUser
-        fields = [
-            'email',
-            'password',
-        ]
+        fields = ('email', 'password')
 
+    def clean_password(self):
+        # Check that the two password entries match
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
 
-class LoginForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+        try:
+            user = HoneyUser.objects.get(email=email)
+        except HoneyUser.DoesNotExist:
+            raise forms.ValidationError("You're not exist. please sign up.")
 
-    class Meta:
-        model = HoneyUser
-        fields = [
-            'email',
-            'password',
-        ]
+        if not user.check_password(password):
+            raise forms.ValidationError("You input wrong password.")
+
+        return user
+
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        user = super(UserLoginForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user

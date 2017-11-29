@@ -13,7 +13,7 @@ from rest_framework.generics import (
 from honey_common.permissions import IsAuthenticatedOrCreate
 
 from .models import HoneyUser
-from .forms import ContactForm, LoginForm
+from .forms import UserCreationForm, UserLoginForm
 from .serializers import SignUpSerializer
 
 
@@ -25,7 +25,7 @@ class SignUpAPIView(CreateAPIView):
 
 class SignUpView(CreateView):
     template_name = 'accounts/signup.html'
-    form_class = ContactForm
+    form_class = UserCreationForm
     success_url = '/thanks/'
 
     def form_valid(self, form):
@@ -38,7 +38,7 @@ class SignUpView(CreateView):
 
 class LogInView(FormView):
     template_name = 'accounts/login.html'
-    form_class = LoginForm
+    form_class = UserLoginForm
     success_url = '/thanks/'
 
     def form_valid(self, form):
