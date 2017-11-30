@@ -7,6 +7,6 @@ from rest_framework import routers
 from .viewsets import UserViewSet, GroupViewSet
 
 
-account_router = routers.DefaultRouter()
-account_router.register(r'users', UserViewSet)
-account_router.register(r'groups', GroupViewSet)
+account_routers = routers.DefaultRouter()
+account_routers.register(r'(?P<version>(v1|v2))/users', UserViewSet)
+account_routers.register(r'(?P<version>(v1|v2))/groups', GroupViewSet)

@@ -6,14 +6,14 @@
 
 {% block content %}
 
-{% url 'account:sign-up' as sign_up %}
-{% if sign_up %}
-  <a href="{{ sign_up }}">Sign Up: {{ sign_up }}</a>
+{% url 'accounts:signup' as signup %}
+{% if signup %}
+  <a href="{{ signup }}">Sign Up: {{ signup }}</a>
 {% endif %}
 
-{% url 'account:log-in' as log_in %}
-{% if log_in %}
-  <a href="{{ log_in }}">Log In: {{ log_in }}</a>
+{% url 'accounts:login' as login %}
+{% if login %}
+  <a href="{{ login }}">Log In: {{ login }}</a>
 {% endif %}
 
 {% endblock content %}

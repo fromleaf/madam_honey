@@ -11,6 +11,14 @@
     <title>Madam Honey's page</title>
 </head>
 <body>
+    {% url 'accounts:login' as login %}
+    {% if request.get_full_path != login %}
+        <form class="logout-form" action="{% url 'accounts:logout' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Logout" />
+        </form>
+    {% endif %}
+
     <h1>{% block header_text %}{% endblock header_text %}</h1>
 
     {% block content %}

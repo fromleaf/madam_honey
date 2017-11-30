@@ -23,22 +23,39 @@ class BaseAccountTest(APITestCase):
         :return: nothing
         """
         # To get all sql queries sent by Django from py shell
-        self.TEST_USER = "test_user"
-        self.ADMIN_USER = "admin_user"
+        # Common Info
         self.PASSWORD = "123456"
-        self.EMAIL = "fromleaf@gmail.com"
-        self.NORMAL_USER_NAME = "gildong"
-        self.NORMAL_PASSWORD = "test"
-        self.KOREAN_NAME = "홍길동"
         self.PHONE = "01099991111"
+        self.factory = RequestFactory()
+
+        # Admin Info
+        self.ADMIN = "admin"
+        self.ADMIN_EMAIL = "admin@test.com"
+
+        # Tester Info
+        self.TESTER = "tester"
+        self.TESTER_EMAIL = "tester@test.com"
+
+        # USER Info
+        self.USER = "gildong"
+        self.USER_EMAIL = "gildong@gildong.com"
 
         self.admin_token = ""
         self.test_token = ""
-        self.factory = RequestFactory()
 
-        test_user = User(email=self.EMAIL)
-        test_user.set_password(self.PASSWORD)
-        test_user.save()
+        # create admin, tester and user
+        self.admin = User.objects.create_superuser(
+            username=self.ADMIN_EMAIL, email=self.ADMIN_EMAIL,
+            password=self.PASSWORD,
+        )
+        self.tester = User.objects.create_user(
+            username=self.TESTER_EMAIL, email=self.TESTER_EMAIL,
+            password=self.PASSWORD,
+        )
+        self.user = User.objects.create_user(
+            username=self.USER_EMAIL, email=self.USER_EMAIL,
+            password=self.PASSWORD,
+        )
 
     def tearDown(self):
         """
@@ -50,14 +67,23 @@ class BaseAccountTest(APITestCase):
     def get_token(self, password, application, client):
         pass
 
-    def create_randomic_users(self, user_count):
+    @staticmethod
+    def create_user(email=None):
+        created_user = User.objects.create_user(
+            username=email, password='{0}'.format('MyPassW@'), email=email
+        )
+        return created_user
+
+    @staticmethod
+    def create_random_users(user_count):
         user_arr = []
         for person in range(user_count):
             user_arr.append(
                 User(
-                    email='{0}{1}@{2}.com'.format('Anonymous', person, person),
-                    password='{0}'.format('MyPassW@')
+                    username='{0}_{1}@anonymous.com'.format('anonymous', person),
+                    password='{0}'.format('MyPassW@'),
+                    email='{0}_{1}@anonymous.com'.format('anonymous', person),
                 )
             )
-        User.objects.bulk_create(user_arr)
-        self.assertEqual(User.objects.count(), user_count)
+        created_users = User.objects.bulk_create(user_arr)
+        return created_users

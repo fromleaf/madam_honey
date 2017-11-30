@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.test import TestCase
 
 from .base import BaseAccountTest
 
 
 class AccountTest(BaseAccountTest):
-    pass
+    def test_create_account(self):
+        user = self.create_user(email='random_user@random.com')
