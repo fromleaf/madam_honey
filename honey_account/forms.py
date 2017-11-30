@@ -4,23 +4,23 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.models import User
 
-from .models import HoneyUser
 
-
-class UserCreationForm(forms.ModelForm):
+class CreateAccountForm(forms.ModelForm):
     """
     A form for creating new users. Includes all the required
     fields, plus a repeated password.
     """
+    username = forms.CharField(label='Email', widget=forms.EmailInput)
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(
         label='Password confirmation', widget=forms.PasswordInput
     )
 
     class Meta:
-        model = HoneyUser
-        fields = ('email', )
+        model = User
+        fields = ('username', )
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -32,24 +32,27 @@ class UserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         # Save the provided password in hashed format
-        user = super(UserCreationForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
+        user = super(CreateAccountForm, self).save(commit=False)
         if commit:
-            user.save()
+            user = User.objects.create_user(
+                username=self.cleaned_data["username"],
+                password=self.cleaned_data["password1"]
+            )
         return user
 
 
-class UserChangeForm(forms.ModelForm):
+class AccountInfoChangeForm(forms.ModelForm):
     """
     A form for updating users. Includes all the fields on
     the user, but replaces the password field with admin's
     password hash display field.
     """
+    username = forms.CharField(label='Email', widget=forms.EmailInput)
     password = ReadOnlyPasswordHashField()
 
     class Meta:
-        model = HoneyUser
-        fields = ('email', 'password', 'is_active', 'is_admin')
+        model = User
+        fields = ('username', 'password', 'is_active', 'is_staff')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -58,35 +61,13 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class UserLoginForm(forms.ModelForm):
+class LoginForm(forms.ModelForm):
     """
     A form for logging users.
     """
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    username = forms.CharField(label='Email', widget=forms.EmailInput)
 
     class Meta:
-        model = HoneyUser
-        fields = ('email', 'password')
-
-    def clean_password(self):
-        # Check that the two password entries match
-        email = self.cleaned_data.get("email")
-        password = self.cleaned_data.get("password")
-
-        try:
-            user = HoneyUser.objects.get(email=email)
-        except HoneyUser.DoesNotExist:
-            raise forms.ValidationError("You're not exist. please sign up.")
-
-        if not user.check_password(password):
-            raise forms.ValidationError("You input wrong password.")
-
-        return user
-
-    def save(self, commit=True):
-        # Save the provided password in hashed format
-        user = super(UserLoginForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-        return user
+        model = User
+        fields = ('username', 'password')

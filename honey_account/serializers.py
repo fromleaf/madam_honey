@@ -6,18 +6,15 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-
-
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
 
 
-class SignUpSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('password', )
-        write_only_fields = ('password', )
+        fields = (
+            'username', 'password', 'is_active', 'is_staff', 'date_joined'
+        )
+        write_only_fields = ('password',)

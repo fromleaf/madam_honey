@@ -27,5 +27,6 @@ urlpatterns = [
 # Add apps' urls
 urlpatterns += [
     url(r'^main/$', MainView.as_view(), name='main'),
-    url(r'', include('honey_account.urls', namespace='account')),
+    url(r'account/', include('honey_account.urls', namespace='account')),
+    url(r'app/', include('honey_app.urls', namespace='honey-app')),
 ]
