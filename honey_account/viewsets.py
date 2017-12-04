@@ -4,24 +4,27 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User, Group
 
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from oauth2_provider.contrib.rest_framework import (
-    TokenHasReadWriteScope, TokenHasScope
-)
 
 from .serializers import UserSerializer, GroupSerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, TokenHasReadWriteScope]
-    queryset = User.objects.all()
+class UserViewSet(ModelViewSet):
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+    queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
 
+    def get_queryset(self):
+        return super(UserViewSet, self).get_queryset()
 
-class GroupViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, TokenHasScope]
+    def create(self, request, *args, **kwargs):
+        return super(UserViewSet, self).create(request, *args, **kwargs)
+
+
+class GroupViewSet(ModelViewSet):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     required_scopes = ['groups']
-    queryset = Group.objects.all()
+    queryset = Group.objects.all().order_by('id')
     serializer_class = GroupSerializer

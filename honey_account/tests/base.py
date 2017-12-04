@@ -5,18 +5,30 @@ from __future__ import unicode_literals
 import pytest
 
 from django.contrib.auth.models import User
+from django.test.testcases import TestCase
 from django.test.client import RequestFactory
 
+from rest_framework.test import APITestCase, APIClient
 from oauth2_provider.models import get_application_model
-
-from rest_framework.test import APITestCase
 
 
 pytest_mark = pytest.mark.django_db
 Application = get_application_model()
 
 
-class BaseAccountTest(APITestCase):
+def add_middleware_to_request(request, middleware_class):
+    middleware = middleware_class()
+    middleware.process_request(request)
+    return request
+
+
+def add_middleware_to_response(request, middleware_class):
+    middleware = middleware_class()
+    middleware.process_request(request)
+    return request
+
+
+class BaseAccountTest(TestCase):
     def setUp(self):
         """
         This function will execute before test case starts
@@ -26,7 +38,6 @@ class BaseAccountTest(APITestCase):
         # Common Info
         self.PASSWORD = "123456"
         self.PHONE = "01099991111"
-        self.factory = RequestFactory()
 
         # Admin Info
         self.ADMIN = "admin"
@@ -87,3 +98,17 @@ class BaseAccountTest(APITestCase):
             )
         created_users = User.objects.bulk_create(user_arr)
         return created_users
+
+
+class BaseAccountAPITest(APITestCase):
+    def setUp(self):
+        self.base_account = BaseAccountTest()
+        self.factory = RequestFactory()
+        self.client = APIClient()
+
+    def tearDown(self):
+        """
+        This function will execute after test case finished or got exception
+        :return: nothing
+        """
+        pass

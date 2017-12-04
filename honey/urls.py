@@ -17,7 +17,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from honey_common.views import MainView
-from honey_account.routers import account_routers
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,13 +24,21 @@ urlpatterns = [
     url(r'^docs/', include('rest_framework_docs.urls', namespace='drf_docs')),
 ]
 
-# Add apps' urls
+# Add Apps' URLs
 urlpatterns += [
     url(r'^main/$', MainView.as_view(), name='main'),
     url(r'accounts/', include('honey_account.urls', namespace='accounts')),
     url(r'app/', include('honey_app.urls', namespace='honey-app')),
 ]
-# For API
+
+# Add API's URLs
 urlpatterns += [
-    url(r'', include(account_routers.urls, namespace='accounts-api')),
+    url(
+        r'^api-auth/',
+        include('rest_framework.urls', namespace='rest_framework')
+    ),
+    url(
+        r'(?P<version>(v1|v2))/accounts/',
+        include('honey_account.routers', namespace='account-routers')
+    ),
 ]

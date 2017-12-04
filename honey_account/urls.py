@@ -6,6 +6,7 @@ from django.conf.urls import url
 
 from .views import (ThanksView, SignupView, LoginView, LogoutView)
 
+
 urlpatterns = [
     # For normal page
     url(r'signup/$', SignupView.as_view(), name='signup'),

@@ -6,7 +6,6 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import CreateAccountForm, LoginForm
 
@@ -14,6 +13,7 @@ from .forms import CreateAccountForm, LoginForm
 class SignupView(CreateView):
     template_name = 'accounts/signup.html'
     form_class = CreateAccountForm
+    success_url = '/app/main/'
 
     def form_valid(self, form):
         super(SignupView, self).form_valid(form)
