@@ -6,16 +6,17 @@ from django.conf.urls import url, include
 
 from rest_framework import routers
 
-from .viewsets import UserViewSet, GroupViewSet
+from .viewsets import (
+    AccountViewSet, CreateAccountViewSet
+)
 
 
 # For API
-users_routers = routers.DefaultRouter()
-users_routers.register(r'users', UserViewSet)
-users_routers.register(r'groups', GroupViewSet)
+account_routers = routers.DefaultRouter()
+account_routers.register(r'create', CreateAccountViewSet)
+account_routers.register(r'', AccountViewSet)
+
 
 urlpatterns = [
-    url(
-        r'', include(users_routers.urls, namespace='users-api')
-    ),
+    url(r'', include(account_routers.urls, namespace='account-api')),
 ]
