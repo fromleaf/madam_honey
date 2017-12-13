@@ -1,12 +1,15 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
 *$py.class
 
 # Django stuff:
 *.log
-local_settings.py
-honey/settings.py
+*/migrations/000*.py
+honey/settings/base.py
+honey/settings/local.py
+db.sqlite3
+static/
+media/
 
 # Pycharm stuff:
 .idea

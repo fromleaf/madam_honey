@@ -1,0 +1,19 @@
+{% extends 'common/base.html' %}
+
+
+{% block header_text %}Common Main{% endblock header_text %}
+
+
+{% block content %}
+
+{% url 'accounts:signup' as signup %}
+{% if signup %}
+  <a href="{{ signup }}">Sign Up: {{ signup }}</a>
+{% endif %}
+
+{% url 'accounts:login' as login %}
+{% if login %}
+  <a href="{{ login }}">Log In: {{ login }}</a>
+{% endif %}
+
+{% endblock content %}
