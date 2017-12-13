@@ -29,6 +29,7 @@ urlpatterns += [
     url(r'^main/$', MainView.as_view(), name='main'),
     url(r'accounts/', include('honey_account.urls', namespace='accounts')),
     url(r'app/', include('honey_app.urls', namespace='honey-app')),
+    url(r'chat/', include('honey_chat.urls', namespace='honey-chat')),
 ]
 
 # Add API's URLs

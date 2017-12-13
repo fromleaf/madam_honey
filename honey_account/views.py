@@ -41,7 +41,7 @@ class LoginView(FormView):
             password=request.POST.get('password')
         )
         if user is not None:
-            login(self.request, user)
+            login(request, user)
             return redirect('/app/main/', user=user)
         else:
             return redirect('/account/signup/')

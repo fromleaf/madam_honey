@@ -1,0 +1,55 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block header_text %}Chat Room{% endblock header_text %}
+
+
+{% block content %}
+    <p class="quiet">
+        Anyone(?) with ths URL can join the room and chat:
+        <code>{{ request.scheme }}://{{ request.get_host }}/chat/{{ chatroom.label }}/</code>
+    </p>
+    {% if user.is_authenticated %}
+        <p>
+            <label for="handle">Your name:</label>
+            <input id="handle" type="text" placeholder="handle" value="{{ user.username }}">
+        </p>
+    {% else %}
+        <p>
+            <label for="handle">Your name:</label>
+            <input id="handle" type="text" placeholder="handle">
+        </p>
+    {% endif %}
+
+    <form id="chatform">
+        {% csrf_token %}
+        <table id="chat">
+            <tbody>
+                {% for message in chatroom.messages.all %}
+                    <tr>
+                        <td>{{ message.formatted_timestamp }}</td>
+                        <td>{{ message.handle }}</td>
+                        <td>{{ message.message }}</td>
+                    </tr>
+                {% empty %}
+                    <li>No messages</li>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Say Something:</td>
+                    <td colspan="2">
+                        <input id="message" type="text" placeholder="message">
+                        <button type="submit" id="go">Say it!</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'channels/js/jquery-1.12.1.min.js' %}"></script>
+    <script src="{% static 'channels/js/reconnecting-websocket.min.js' %}"></script>
+    <script src="{% static 'channels/js/chat.js' %}"></script>
+{% endblock script %}

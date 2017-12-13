@@ -1,0 +1,15 @@
+{% extends 'common/base.html' %}
+
+{% block header_text %}Create Chat Room{% endblock header_text %}
+
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <input class="button button-primary" type="submit" value="Create Chatroom"/>
+    </form>
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}
