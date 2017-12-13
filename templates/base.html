@@ -5,8 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <!-- Bootstrap -->
-    <link rel="stylesheet" type="text/css"
-          href="{% static  "bootstrap/4.0.0-beta.2/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static  "bootstrap/4.0.0-beta.2/css/bootstrap.min.css" %}">
+
+    {% block stylesheet %}
+    {% endblock stylesheet %}
 
     <title>Madam Honey's page</title>
 </head>
@@ -24,11 +26,10 @@
     {% block content %}
     {% endblock content %}
 
+
     {% block script %}
     {% endblock script %}
-
     <script src="http://code.jquery.com/jquery.js"></script>
-    <script type="text/javascript"
-            src="{% static "bootstrap/4.0.0-beta.2/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "bootstrap/4.0.0-beta.2/js/bootstrap.min.js" %}"></script>
 </body>
 </html>
