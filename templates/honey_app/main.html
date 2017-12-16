@@ -1,9 +1,15 @@
-{% extends 'common/base.html' %}
+{% extends 'honey_app/base_app.html' %}
+
+{% block stylesheet %}
+{% endblock stylesheet %}
 
 {% block header_text %}App Main{% endblock header_text %}
 
 
 {% block content %}
     <b>{{ user.username }}</b>
-    <b>{{ user.joined_date }}</b>
+    <b>{{ user.date_joined }}</b>
 {% endblock content %}
+
+{% block script %}
+{% endblock script %}
