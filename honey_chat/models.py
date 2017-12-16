@@ -16,10 +16,6 @@ class ChatRoom(CommonModel):
         help_text='This label will be automatically made by Haikunator Library.'
     )
 
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
-    deleted_at = models.DateTimeField(null=True)
-
     def __unicode__(self):
         return self.label
 
@@ -32,10 +28,6 @@ class Message(CommonModel):
     handle = models.TextField()
     message = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
-
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
-    deleted_at = models.DateTimeField(null=True)
 
     def __unicode__(self):
         return '[{timestamp}] {handle}: {message}'.format(**self.as_dict())
