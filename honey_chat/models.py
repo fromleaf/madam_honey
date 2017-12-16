@@ -6,8 +6,10 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 
+from honey_common.models import CommonModel
 
-class ChatRoom(models.Model):
+
+class ChatRoom(CommonModel):
     name = models.TextField()
     label = models.SlugField(
         unique=True,
@@ -25,7 +27,7 @@ class ChatRoom(models.Model):
         return reverse('honey-chat:chatroom', args=[self.label])
 
 
-class Message(models.Model):
+class Message(CommonModel):
     chat_room = models.ForeignKey(ChatRoom, related_name='messages')
     handle = models.TextField()
     message = models.TextField()
