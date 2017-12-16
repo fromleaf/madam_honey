@@ -16,6 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from rest_framework_jwt.views import (
+    obtain_jwt_token, refresh_jwt_token, verify_jwt_token
+)
+
 from honey_common.views import MainView
 
 urlpatterns = [
@@ -26,19 +30,23 @@ urlpatterns = [
 # Add Apps' URLs
 urlpatterns += [
     url(r'^main/$', MainView.as_view(), name='main'),
-    url(r'accounts/', include('honey_account.urls', namespace='accounts')),
-    url(r'app/', include('honey_app.urls', namespace='honey-app')),
-    url(r'chat/', include('honey_chat.urls', namespace='honey-chat')),
+    url(r'^accounts/', include('honey_account.urls', namespace='accounts')),
+    url(r'^app/', include('honey_app.urls', namespace='honey-app')),
+    url(r'^chat/', include('honey_chat.urls', namespace='honey-chat')),
 ]
 
 # Add API's URLs
 urlpatterns += [
+    # REST Framework
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    # Using JWT
+    url(r'^api-token-auth/', obtain_jwt_token),
+    url(r'^api-token-refresh/', refresh_jwt_token),
+    url(r'^api-token-verify/', verify_jwt_token),
+
     url(
-        r'^api-auth/',
-        include('rest_framework.urls', namespace='rest_framework')
-    ),
-    url(
-        r'(?P<version>(v1|v2))/accounts/',
+        r'^(?P<version>(v1|v2))/accounts/',
         include('honey_account.routers', namespace='account-routers')
     ),
 ]

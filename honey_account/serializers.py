@@ -7,6 +7,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
+from .models import JWToken
+
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -69,4 +71,52 @@ class CreateAccountSerializer(AccountSerializer):
             password=self.validated_data["password"],
             email=self.validated_data["username"]
         )
+        return user
+
+
+class AccountWithJWTSerializer(AccountSerializer):
+    token = serializers.CharField(read_only=True, source='get_jwt_token')
+
+    class Meta:
+        model = User
+
+    def get_jwt_token(self):
+        token = JWToken.objects.filter(
+            user_id=self.id
+        ).select_related('user_jwtoken')
+
+        return token.last()
+
+
+class CreateAccountWithJWTSerializer(AccountWithJWTSerializer):
+    username = serializers.CharField(
+        label='email', max_length=255,
+        validators=[UniqueValidator(queryset=User.objects.all()), ],
+        style={'input_type': 'email'},
+    )
+
+    confirm_password = serializers.CharField(
+        style={'input_type': 'password'}, max_length=255,
+        help_text='for confirm password'
+    )
+
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'password',
+            'confirm_password',
+            'token',
+        )
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=self.validated_data["username"],
+            password=self.validated_data["password"],
+            email=self.validated_data["username"]
+        )
+
+        # create JWT
+        JWToken.objects.create(user=user)
+
         return user
