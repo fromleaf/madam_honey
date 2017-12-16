@@ -20,7 +20,6 @@ from honey_common.views import MainView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^docs/', include('rest_framework_docs.urls', namespace='drf_docs')),
 ]
 

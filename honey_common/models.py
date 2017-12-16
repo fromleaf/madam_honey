@@ -19,6 +19,9 @@ class CommonModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
     deleted_at = models.DateTimeField(null=True)
 
+    class Meta:
+        abstract = True
+
     def delete(self, using=None, keep_parents=False):
         self.is_deleted = True
         self.deleted = utils.get_local_today()
