@@ -9,11 +9,9 @@ from django.test.testcases import TestCase
 from django.test.client import RequestFactory
 
 from rest_framework.test import APITestCase, APIClient
-from oauth2_provider.models import get_application_model
 
 
 pytest_mark = pytest.mark.django_db
-Application = get_application_model()
 
 
 def add_middleware_to_request(request, middleware_class):
