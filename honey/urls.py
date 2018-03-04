@@ -40,6 +40,9 @@ urlpatterns += [
     # REST Framework
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
+    # OAuth 2 endpoint
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+
     # Using JWT
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),

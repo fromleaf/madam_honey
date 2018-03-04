@@ -7,19 +7,16 @@ from django.conf.urls import url, include
 from rest_framework import routers
 
 from .viewsets import (
-    AccountViewSet, SignUpViewSet,
-    AccountWithJWTViewSet, SignUpWithJWTViewSet
+    AccountViewSet, SignUpViewSet, SignUpWithOAuth2ViewSet
 )
-
 
 # For API
 account_routers = routers.DefaultRouter()
-account_routers.register(r'accounts', AccountViewSet)
-account_routers.register(r'accounts-jwt', AccountWithJWTViewSet)
+account_routers.register(r'users', AccountViewSet)
 
 sign_routers = routers.DefaultRouter()
 sign_routers.register(r'signup', SignUpViewSet)
-sign_routers.register(r'signup-jwt', SignUpWithJWTViewSet)
+sign_routers.register(r'signup-oauth2', SignUpWithOAuth2ViewSet)
 
 urlpatterns = [
     url(r'', include(account_routers.urls, namespace='account-api')),

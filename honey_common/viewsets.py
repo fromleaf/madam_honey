@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
@@ -28,11 +28,10 @@ class RDViewSet(mixins.ListModelMixin,
     pass
 
 
-class CUViewSet(mixins.CreateModelMixin,
-                mixins.UpdateModelMixin,
-                viewsets.GenericViewSet):
+class CreateViewSet(mixins.CreateModelMixin,
+                    viewsets.GenericViewSet):
     """
-    A viewset that provides 'create', and 'update' actions.
+    A viewset that provides only 'create' actions.
     """
     pass
 

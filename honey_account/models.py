@@ -26,7 +26,7 @@ class JWToken(TokenModel):
     )
     payload = models.CharField(max_length=100, null=False)
     token = models.CharField(max_length=300, null=False)
-    expired_time = models.IntegerField(default=0)
+    expires = models.IntegerField(default=0)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -38,3 +38,15 @@ class JWToken(TokenModel):
         self.expired_time = self.payload.get('exp', None)
 
         super(JWToken, self).save()
+
+
+class RefreshJWToken(TokenModel):
+    user = models.ForeignKey(
+        User, related_name='user_jwtoken', on_delete=models.CASCADE
+    )
+    access_token_id = models.BigIntegerField(null=False)
+    token = models.CharField(max_length=300, null=False)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        super(RefreshJWToken, self).save()
